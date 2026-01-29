@@ -5,432 +5,100 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vibchip - 领航芯片技术</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/index.css">
 
-<style>
-    :root {
-      /* ==== 核心主题色 ==== */
-      --primary-blue: #2979ff;    /* 亮宝蓝 */
-      --neon-cyan: #2f8aff;       /* 电光青 */
-      
-      /* ==== 背景色定义 ==== */
-      --bg-base: #0a192f;         /* 1. 深底色 (Intro, LV1, LV3) */
-      --bg-light: #112240;        /* 2. 稍亮色 (LV2, LV4) */
-      
-      /* 辅助色 */
-      --text-main: #e6f1ff;       /* 冷白 */
-      --text-sub: #8892b0;        /* 蓝灰 */
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background-color: var(--bg-base);
-      color: var(--text-main);
-      font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    .container {
-      width: 90%;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    /* ==== 轮播图区域 ==== */
-    .carousel-wrapper {
-      position: relative;
-      height: calc(100vh - 70px);
-      width: 100vw;
-      left: 50%;
-      right: 50%;
-      margin-left: -50vw;
-      margin-right: -50vw;
-      overflow: hidden;
-      background: #020c1b;
-
-      /* 底部灯带 */
-      border-bottom: 2px solid var(--neon-cyan);
-      z-index: 5; 
-    }
-
-    .carousel-track {
-      display: flex;
-      height: 100%;
-      transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
-    }
-
-    .slide {
-      min-width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-size: cover;
-      position: relative;
-    }
-    .slide:nth-child(1) {
-      background-position: 0px -80px;
-    }
-    .slide:nth-child(2) {
-      background-position: center;
-    }
-    .slide:nth-child(3) {
-      background-position: center;
-    }
-    .slide::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(135deg, rgba(10, 25, 47, 0.4), rgba(2, 12, 27, 0.6));
-    }
-
-    .slide-text-block {
-      position: absolute;
-      top: 16%;
-      left: 7%;
-      max-width: 65%;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5em;
-      z-index: 2;
-    }
-    .slide-text-block .slide-content {
-      position: static;
-      top: auto;
-      left: auto;
-      right: auto;
-    }
-    .slide-content {
-      position: absolute;
-      z-index: 2;
-      font-family: 'Segoe UI', sans-serif;
-      color: #fff;
-      background: transparent;
-      backdrop-filter: none;
-      border: none;
-      box-shadow: none;
-      padding: 0;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
-      max-width: 100%;
-    }
-    .slide-title { font-size: 45px;max-width: 620px; }
-    .slide-desc { font-size: 28px; max-width: 670px;}
-    @media (min-width: 1200px) { .slide-title { font-size: 2.5rem; } .slide-desc { font-size: 1.6rem; } }
-    @media (max-width: 992px) { .slide-text-block { top: 6%; left: 5%; max-width: 75%; } .slide-title { font-size: 1.8rem; } .slide-desc { font-size: 1.2rem; } }
-    @media (max-width: 768px) { .slide-text-block { top: 5%; left: 4%; max-width: 85%; gap: 1em; } .slide-title { font-size: 1.2rem; } .slide-desc { font-size: 0.95rem; } }
-
-    .carousel-btn {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      background: rgba(17, 34, 64, 0.5); 
-      border: 1px solid var(--neon-cyan);
-      color: var(--neon-cyan);
-      width: 55px; height: 55px;
-      cursor: pointer; z-index: 20; border-radius: 50%; font-size: 1.5rem; transition: 0.4s;
-    }
-
-    .carousel-btn:hover {
-      background: rgba(47, 138, 255, 0.2);
-    }
-    .prev { left: 40px; }
-    .next { right: 40px; }
-
-    .carousel-dots {
-      position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 12px; z-index: 20;
-    }
-    .dot {
-      width: 30px; height: 4px; background: rgba(230, 241, 255, 0.3); border-radius: 2px; transition: 0.4s;
-    }
-    .dot.active {
-      background: var(--neon-cyan); width: 50px;
-    }
-
-
-    /* ==== Intro Section (简介区 - 纯文字无框版) ==== */
-    .intro-section.custom-layout {
-      position: relative; 
-      /* width: 100%;  */
-      max-width: 1280px; 
-      min-height: 1200px; 
-      margin: 100px auto 0 auto; 
-      padding: 100px 0;
-      background: var(--bg-base); 
-    }
-
-    .bg-text-watermark {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      font-size: 12vw; font-weight: 900;
-      color: rgba(230, 241, 255, 0.03);
-      z-index: 0; pointer-events: none; white-space: nowrap;
-    }
-
-    .diagonal-img-box {
-      position: absolute; 
-      width: 46%; 
-      height: 380px;
-      max-width: 1000px;
-      border-radius: 20px; overflow: hidden;
-      box-shadow: 0 20px 50px rgba(2, 12, 27, 0.7);
-      z-index: 1; border: 1px solid rgba(100, 255, 218, 0.1);
-    }
-    .diagonal-img-box img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
-    
-    .img-top-left { top: 8%; left: 0; } 
-    .img-bottom-right { bottom: 8%; right: 0; }
-
-    .text-block {
-      position: absolute; 
-      width: 40%; 
-      z-index: 10; 
-      padding: 0;
-      background: transparent;
-      backdrop-filter: none;
-      border-radius: 0;
-      border: none;
-      box-shadow: none;
-    }
-    
-    .text-top-right { 
-      top: 150px; 
-      right: 3%; 
-      text-align: left; 
-    }
-    
-    /* 【核心修改处】：将 bottom 从 150px 减小为 50px，使文字块向下移动 */
-    .text-bottom-left { 
-      bottom: 50px; 
-      left: 3%; 
-      text-align: left; 
-    }
-
-    .unified-text { 
-      font-size: 1.2rem; 
-      color: var(--text-sub) !important; 
-      margin-bottom: 15px; 
-      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    }
-    
-    .unified-text.highlight {
-      font-size: 1.6rem; 
-      font-weight: 800;
-      color: #fff !important;
-      background: linear-gradient(90deg, #fff, var(--neon-cyan));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    @media (max-width: 992px) {
-      .intro-section.custom-layout { display: flex; flex-direction: column; min-height: auto; gap: 50px; padding: 60px 20px; }
-      .diagonal-img-box, .text-block { position: static; width: 100%; height: auto; max-width: 100%; }
-      .diagonal-img-box { height: 350px; }
-      .text-top-right, .text-bottom-left { top: auto; bottom: auto; right: auto; left: auto; padding: 0; background: transparent; border: none; box-shadow: none; }
-    }
-
-
-    /* ==== Feature Sections (LV1-LV4) ==== */
-    .feature-section {
-      width: 100%; padding: 100px 0;
-      background-color: var(--bg-base); 
-      border-top: none; 
-    }
-
-    .feature-grey {
-      width: 100%; padding: 100px 0;
-      background-color: var(--bg-light); 
-      border-top: 1px solid rgba(255, 255, 255, 0.02);
-    }
-
-    .feature-section .container, 
-    .feature-grey .container {
-      /* width: 96% !important; */
-      max-width: 1280px !important;
-    }
-
-    .feature-row { 
-      display: flex; 
-      align-items: center; 
-      gap: 80px; 
-    }
-    
-    .feature-section:nth-child(even) .feature-row, 
-    .feature-grey .feature-row { 
-      flex-direction: row-reverse; 
-    }
-
-    .feature-image {
-      flex: 1; 
-      height: 380px; 
-      border-radius: 24px; 
-      overflow: hidden;
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6); 
-      border: 1px solid rgba(100, 255, 218, 0.1);
-    }
-
-    .feature-image img { 
-      width: 100%; 
-      height: 100%; 
-      object-fit: cover; 
-      display: block; 
-      transition: transform 0.6s ease; 
-    }
-    .feature-image:hover img { transform: scale(1.03); }
-
-    .feature-content { 
-      flex: 1; 
-      padding: 0 20px; 
-    }
-    
-    .feature-content .lev {
-      background: linear-gradient(90deg, var(--neon-cyan), var(--primary-blue));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-weight: 700; font-size: 36px; position: relative; margin-bottom: 20px;
-    }
-
-    .feature-content h2 { 
-      font-size: 2.8rem; color: #fff; margin-bottom: 25px; position: relative; 
-      line-height: 1.2;
-    }
-    .feature-content h2::after {
-      content: ''; position: absolute; left: 0; bottom: -10px; width: 60px; height: 5px;
-      background: var(--neon-cyan);
-    }
-
-    .feature-content p { 
-      font-size: 1.2rem; line-height: 1.8;
-      color: var(--text-sub); margin-bottom: 35px; 
-    }
-
-    .feature-list, .check-list { list-style: none; }
-    
-    .feature-list li, .check-list li { 
-      margin-bottom: 18px; 
-      display: flex; align-items: flex-start; 
-      font-size: 1.2rem; 
-      color: var(--text-main); gap: 15px; 
-    }
-    
-    .feature-list li img, .check-list li img { 
-      width: 36px; height: 36px; margin-top: 3px; flex-shrink: 0; 
-    }
-
-    @media (max-width: 992px) {
-      .feature-row, .feature-grey .feature-row { flex-direction: column !important; gap: 40px; }
-      .feature-image, .feature-content { width: 100%; flex: auto; }
-      .feature-image { height: 350px; }
-      .feature-content { padding: 0 10px; }
-    }
-
-
-    /* ==== Header 强制覆盖 ==== */
-    .site-header {
-      background-color: rgba(10, 25, 47, 0.95) !important;
-      background: linear-gradient(to right, #0a192f, #112240) !important;
-      border-bottom: 2px solid var(--neon-cyan) !important;
-      color: #fff !important;
-    }
-    .site-header a { color: var(--text-main) !important; text-decoration: none !important; transition: 0.3s; }
-    .site-header a:hover {
-      color: var(--neon-cyan) !important;
-    }
-    .site-header img { filter: brightness(1.1); }
-
-
-    /* ==== Footer 强制覆盖 ==== */
-    .site-footer {
-      background-color: #0a192f !important;
-      background: linear-gradient(to bottom, #112240, #0a192f) !important;
-      border-top: 2px solid var(--neon-cyan) !important;
-      color: var(--text-sub) !important;
-      padding-top: 80px;
-    }
-    
-    .site-footer h4, .link-group h4 {
-      color: var(--neon-cyan) !important;
-      text-transform: uppercase;
-    }
-    
-    .site-footer a, .link-group ul li a { color: #8892b0 !important; transition: 0.3s; }
-    .site-footer a:hover, .link-group ul li a:hover {
-      color: var(--neon-cyan) !important;
-      padding-left: 5px;
-    }
-    
-    @media (max-width: 992px) {
-      .footer-flex { flex-direction: column; gap: 50px; text-align: center; align-items: center; }
-      .footer-links { gap: 50px; }
-    }
-</style>
 </head>
 
 <body>
   <div class="layout-wrapper">
 
-    <header id="header-placeholder" class="site-header"></header>
+    <header class="site-header">
+      <div class="container header-flex">
+        <a href="index.html" class="header-logo">
+          <img src="img/logo.png" alt="Vibchip"
+            onerror="this.src='https://via.placeholder.com/150x50/0a1628/2f8aff?text=Vibchip'">
+        </a>
+        <nav class="main-nav">
+          <ul>
+            <li><a href="index.html" class="active">About</a></li>
+            <li><a href="service.html">Services</a></li>
+            <li class="nav-item has-dropdown">
+              <a href="quality.html">Quality</a>
+              <div class="dropdown-box">
+                <div class="dropdown-content">
+                  <h4 class="dropdown-title">Quality Control Process</h4>
+                  <p class="dropdown-desc">Vibchip is committed to rigorous testing processes that prioritize quality,
+                    efficiency, and excellence.</p>
+                </div>
+              </div>
+            </li>
+            <li><a href="product.html">Product</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
 
     <main class="site-content">
       <div class="carousel-wrapper">
         <div class="carousel-track" id="carouselTrack">
           <div class="slide" style="background-image: url('img2/about1.jpg')">
             <div class="slide-text-block">
-              <div class="slide-content slide-title">Original Electronic Components Sourcing and Testing.</div>
-              <div class="slide-content slide-desc">Premium electronic components spot supplier</div>
+              <div class="slide-title">Original Electronic Components Sourcing and Testing.</div>
+              <div class="slide-desc">Premium electronic components spot supplier</div>
             </div>
           </div>
           <div class="slide" style="background-image: url('img2/about4.png')">
             <div class="slide-text-block">
-              <div class="slide-content slide-title">Tremendous demand, rising prices. <br>Ensure memory supply.</div>
-              <div class="slide-content slide-desc">Keep track of DDR4 availability and price changes.Seize <br> the initiative ahead of shortages.</div>
+              <div class="slide-title">Tremendous demand, rising prices. Ensure memory supply.</div>
+              <div class="slide-desc">Keep track of DDR4 availability and price changes.Seize<br>the initiative ahead of shortages.</div>
             </div>
           </div>
           <div class="slide" style="background-image: url('img2/about3.png')">
             <div class="slide-text-block">
-              <div class="slide-content slide-title">See where Al demand is about to break capacity<br></div>
-              <div class="slide-content slide-desc">Securing critical electronic components is vital for sustaining our unhindered growth.</div>
+              <div class="slide-title">See where Al demand is about to break capacity</div>
+              <div class="slide-desc">Securing critical electronic components is vital for sustaining our unhindered growth.</div>
             </div>
           </div>
         </div>
-        <button class="carousel-btn prev" id="prevBtn">&#10094;</button>
-        <button class="carousel-btn next" id="nextBtn">&#10095;</button>
+        <button class="carousel-btn prev" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-btn next" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
         <div class="carousel-dots" id="carouselDots"></div>
       </div>
 
 
-      <section class="intro-section custom-layout">
-        <div class="diagonal-img-box img-top-left">
-          <img src="img2/about001.jpg" alt="Innovation Lab">
+      <section class="intro-section">
+        <div class="container intro-grid">
+            <div class="intro-image">
+                <img src="img2/about001.jpg" alt="Innovation Lab">
+            </div>
+            <div class="intro-content">
+                <p class="highlight">20+ Years of Procurement Expertise</p>
+                <h2>Reliable Global Supply Chain</h2>
+                <div class="text-body">
+                    <p>Vibchip is a well-established electronic component distributor with a dynamic sales team and senior purchasing experts. We maintain sufficient "safety stock" to ensure you receive reasonable prices and quality-reliable component quotations on the same day.</p>
+                    <br>
+                    <p>Whether urgently seeking a specific component or managing an entire supply chain, we are your reliable partner. We believe business is built on people—delivering exceptional service brings natural rewards.</p>
+                </div>
+            </div>
         </div>
-
-        <div class="text-block text-top-right">
-          <p class="unified-text highlight">20+ Years of Procurement Expertise</p>
-          <p class="unified-text">
-            Vibchip is well-known and established electronic component distributor with dynamic sales team and senior purchasing team with over 20 years experience.
-We always maintain a sufficient "safety stock" to ensure that you can receive price reasonable and quality reliable component quotations on the same day.
-Whether it's urgently seeking a specific component or managing an entire supply chain, we are willing to be your reliable "add-on" partner.
-          </p>
+        <div class="container intro-grid" style="margin-top: 80px;">
+          
+          <div class="intro-content">
+              <h2>Driving Value Through Strategy</h2>
+              <div class="text-body">
+                  <p>We are dedicated to problem-solving and empowering clients to create greater value —— We firmly believe that business is built on people, when we deliver exceptional service to clients, rewards will naturally follow. The combination of sound procurement strategies and years of industry expertise can inject new impetus into the supply chain. Vibchip adheres to a simple yet unwavering mission: to empower clients to rapidly source high-reliability electronic components with lower risks and optimized costs. We deliver highly competitive pricing while upholding uncompromising quality standards – every component undergoes rigorous electrical testing and validation prior to shipment.</p>
+    
+              </div>
+          </div>
+          <div class="intro-image">
+            <img src="img2/about7.png" alt="Innovation Lab">
         </div>
-
-        <div class="text-block text-bottom-left">
-          <p class="unified-text highlight">Driving Value Through Strategy</p>
-          <p class="unified-text">
-            We are dedicated to problem-solving and empowering clients to create greater value —— We firmly believe that business is built on people, when we deliver exceptional service to clients, rewards will naturally follow.
-The combination of sound procurement strategies and years of industry expertise can inject new impetus into the supply chain.
-Vibchip adheres to a simple yet unwavering mission: to empower clients to rapidly source high-reliability electronic components with lower risks and optimized costs.
-We deliver highly competitive pricing while upholding uncompromising quality standards – every component undergoes rigorous electrical testing and validation prior to shipment.
-          </p>
-        </div>
-
-        <div class="diagonal-img-box img-bottom-right">
-          <img src="img2/about7.png" alt="Global Supply Chain">
-        </div>
+      </div>
       </section>
-
-
 
       <section class="feature-section">
         <div class="container feature-row">
@@ -438,14 +106,13 @@ We deliver highly competitive pricing while upholding uncompromising quality sta
             <img src="img2/service8.jpg" alt="Shortage">
           </div>
           <div class="feature-content">
-            <p class="lev">lv1</p>
+            <span class="lev">lv 01</span>
             <h2>Shortage Part Procurement</h2>
-            <p>Develop a scientific procurement strategy in response to procurement changes caused by supply-demand
-              relationships；Seize the initiative in procurement ahead of shortage.</p>
+            <p>Develop a scientific procurement strategy in response to procurement changes caused by supply-demand relationships；Seize the initiative in procurement ahead of shortage.</p>
             <ul class="feature-list">
-              <li><img src="/img2/icon001.png" alt="">Powerful data capabilities to quickly identify component shortages</li>
-              <li><img src="/img2/icon001.png" alt="">Acute analytical skills to be ahead of market trends in component shortages</li>
-              <li><img src="/img2/icon001.png" alt="">Intelligent system to provide real-time access to global supply channel inventory</li>
+              <li><img src="img2/icon001.png" alt="icon">Powerful data capabilities to quickly identify component shortages</li>
+              <li><img src="img2/icon001.png" alt="icon">Acute analytical skills to be ahead of market trends in component shortages</li>
+              <li><img src="img2/icon001.png" alt="icon">Intelligent system to provide real-time access to global supply channel inventory</li>
             </ul>
           </div>
         </div>
@@ -453,25 +120,20 @@ We deliver highly competitive pricing while upholding uncompromising quality sta
 
 
       <section class="feature-grey">
-        <div class="container feature-row">
+        <div class="container feature-row reverse">
           <div class="feature-image">
-            <img src="img2/service2.png" alt="Cost-down"
-              onerror="this.src='https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=800'">
+            <img src="img2/service2.png" alt="Cost-down">
           </div>
 
           <div class="feature-content">
-            <p class="lev">lv2</p>
+            <span class="lev">lv 02</span>
             <h2>PPV Cost-down Strategy</h2>
-            <p>Continuously identify cost-reduction opportunities, align with your target price, and reduce
-              intermediate
-              cost in your procurement process.</p>
+            <p>Continuously identify cost-reduction opportunities, align with your target price, and reduce intermediate cost in your procurement process.</p>
 
             <ul class="check-list">
-              <li><img src="img2/icon002.png" alt="">Equippe with an intelligent data system for real-time component prices updating</li>
-              <li><img src="img2/icon002.png" alt="">Integrate with multiple major distributors for direct access to the best prices</li>
-              <li><img src="img2/icon002.png" alt="">A professional procurement team conducts global sourcing to customize electronic component
-                procurement
-                solutions for you.</li>
+              <li><img src="img2/icon002.png" alt="icon">Equippe with an intelligent data system for real-time component prices updating</li>
+              <li><img src="img2/icon002.png" alt="icon">Integrate with multiple major distributors for direct access to the best prices</li>
+              <li><img src="img2/icon002.png" alt="icon">A professional procurement team conducts global sourcing to customize electronic component procurement solutions for you.</li>
             </ul>
           </div>
         </div>
@@ -484,17 +146,13 @@ We deliver highly competitive pricing while upholding uncompromising quality sta
             <img src="img2/about2.jpg" alt="Integrated Supplier">
           </div>
           <div class="feature-content">
-            <p class="lev">lv3</p>
+            <span class="lev">lv 03</span>
             <h2>Integrated Supplier Service</h2>
-            <p>Establish a global network and integrate high-quality suppliers to alleviate your procurement burden
-              while ensuring quality and supply reliability</p>
+            <p>Establish a global network and integrate high-quality suppliers to alleviate your procurement burden while ensuring quality and supply reliability</p>
             <ul class="feature-list">
-              <li><img src="img2/icon003.png" alt="">Maintain close collaboration with global suppliers and implement tiered management to rigorously
-                control supplier quality</li>
-              <li><img src="img2/icon003.png" alt="">Cover comprehensively over 10000+ electronic component suppliers and over 10 millions of SKUs</li>
-              <li><img src="img2/icon003.png" alt="">Respond to customer needs flexibly and efficiently based on stable supplier relationships and a
-                robust
-                management system</li>
+              <li><img src="img2/icon003.png" alt="icon">Maintain close collaboration with global suppliers and implement tiered management to rigorously control supplier quality</li>
+              <li><img src="img2/icon003.png" alt="icon">Cover comprehensively over 10000+ electronic component suppliers and over 10 millions of SKUs</li>
+              <li><img src="img2/icon003.png" alt="icon">Respond to customer needs flexibly and efficiently based on stable supplier relationships and a robust management system</li>
             </ul>
           </div>
         </div>
@@ -502,25 +160,19 @@ We deliver highly competitive pricing while upholding uncompromising quality sta
 
 
       <section class="feature-grey">
-        <div class="container feature-row">
+        <div class="container feature-row reverse">
           <div class="feature-image">
-            <img src="img2/service4.png" alt="Excess Solutions"
-              onerror="this.src='https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=800'">
+            <img src="img2/service4.png" alt="Excess Solutions">
           </div>
 
           <div class="feature-content">
-            <p class="lev">lv4</p>
+            <span class="lev">lv 04</span>
             <h2>Excess Solutions</h2>
-            <p>Based on your inventory status, we leverage big data analytics and professional team insights to
-              analyze
-              market demand, implement differentiated pricing for your materials, and execute multi-channel promotion
-              strategies to formulate the optimal solution for you.</p>
+            <p>Based on your inventory status, we leverage big data analytics and professional team insights to analyze market demand, implement differentiated pricing for your materials, and execute multi-channel promotion strategies to formulate the optimal solution for you.</p>
 
             <ul class="check-list">
-              <li><img src="img2/icon004.png" alt="">A dedicated professional team provides personalized services to formulate the optimal inventory
-                management solution</li>
-              <li><img src="img2/icon004.png" alt="">Turn your inventory into revenue, offer inventory consignment and online showcase to your excess
-                inventory</li>
+              <li><img src="img2/icon004.png" alt="icon">A dedicated professional team provides personalized services to formulate the optimal inventory management solution</li>
+              <li><img src="img2/icon004.png" alt="icon">Turn your inventory into revenue, offer inventory consignment and online showcase to your excess inventory</li>
             </ul>
           </div>
         </div>
@@ -529,33 +181,42 @@ We deliver highly competitive pricing while upholding uncompromising quality sta
 
     </main>
 
-    <footer id="footer-placeholder" class="site-footer"></footer>
+    <footer class="site-footer">
+      <div class="footer-grid container">
+        <div class="footer-brand">
+          <div class="footer-logo"><img src="img/logo.png" alt="Vibchip"></div>
+          <p>A leading global semiconductor supply chain solution provider with 20+ years of expertise. Sustaining growth through reliability.</p>
+        </div>
+
+        <div class="footer-links">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="service.html">Services</a></li>
+            <li><a href="quality.html">Quality</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-contact">
+          <h4>Newsletter</h4>
+          <div class="subscribe-box">
+            <input type="email" placeholder="Enter your email">
+            <button><i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="container">
+          <p>&copy; 2026 VIBCHIP Technology. All Rights Reserved. <span class="glow-text">Future Powered by Chips</span></p>
+        </div>
+      </div>
+    </footer>
 
   </div>
 
   <script>
-
-    async function loadComponent(id, url) {
-      try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Network response was not ok');
-        const data = await response.text();
-        const element = document.getElementById(id);
-        if (element) {
-          element.innerHTML = data;
-          if (id === 'header-placeholder') highlightNav();
-        }
-      } catch (err) {
-        console.error('加载失败:', url, err);
-      }
-    }
-
-    // 立即执行，不要等 onload
-    loadComponent('header-placeholder', 'header.html');
-    loadComponent('footer-placeholder', 'footer.html');
-
-
-
     document.addEventListener('DOMContentLoaded', function () {
       const track = document.getElementById('carouselTrack');
       const slides = Array.from(track.children);
@@ -564,10 +225,9 @@ We deliver highly competitive pricing while upholding uncompromising quality sta
       const nextBtn = document.getElementById('nextBtn');
 
       let currentIndex = 0;
-      const autoTime = 1000000; // 建议改为5000ms(5秒)，10秒略长
+      const autoTime = 6000; 
       let timer = null;
 
-      // 初始化圆点
       slides.forEach((_, i) => {
         const dot = document.createElement('div');
         dot.classList.add('dot');
@@ -580,7 +240,6 @@ We deliver highly competitive pricing while upholding uncompromising quality sta
       });
       const dots = Array.from(dotsContainer.children);
 
-      // 核心切换函数
       function goTo(index) {
         if (index < 0) index = slides.length - 1;
         if (index >= slides.length) index = 0;
@@ -591,7 +250,6 @@ We deliver highly competitive pricing while upholding uncompromising quality sta
         });
       }
 
-      // 修改：手动控制不使用 click() 触发，而是直接调用函数
       nextBtn.onclick = () => {
         goTo(currentIndex + 1);
         resetTimer();
@@ -602,7 +260,6 @@ We deliver highly competitive pricing while upholding uncompromising quality sta
         resetTimer();
       };
 
-      // 修改：自动轮播直接调用 goTo，避免触发 nextBtn 上的 resetTimer
       function startTimer() {
         if (timer) clearInterval(timer);
         timer = setInterval(() => {
@@ -615,10 +272,8 @@ We deliver highly competitive pricing while upholding uncompromising quality sta
         startTimer();
       }
 
-      // 启动
       startTimer();
-
-      // 鼠标交互控制
+      
       const wrapper = document.querySelector('.carousel-wrapper');
       wrapper.addEventListener('mouseenter', () => clearInterval(timer));
       wrapper.addEventListener('mouseleave', startTimer);

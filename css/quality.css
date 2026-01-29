@@ -1,0 +1,92 @@
+/* Quality Page Styles */
+
+.feature-section, .feature-grey {
+  padding: 120px 0;
+}
+
+/* Reusing common feature styles, but specific quality icons adjustments */
+.feature-list li img, .check-list li img {
+  width: 24px;
+  height: 24px;
+  margin-right: 5px;
+  position: relative;
+  top: 2px;
+}
+
+/* Supplier Section */
+.supplier-section {
+  padding: 120px 0;
+  background: var(--bg-base);
+}
+
+.section-header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 80px;
+}
+
+.section-header h2 {
+  font-size: 3rem;
+  margin-bottom: 24px;
+}
+
+.supplier-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+}
+
+.supplier-card {
+  background: var(--bg-light);
+  padding: 40px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  display: flex;
+  gap: 24px;
+  transition: var(--transition);
+}
+
+.supplier-card:hover {
+  border-color: rgba(56, 189, 248, 0.3);
+  transform: translateY(-5px);
+}
+
+.supplier-icon {
+  font-size: 2rem;
+  color: var(--accent-cyan);
+  background: rgba(14, 165, 233, 0.1);
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.supplier-info h4 {
+  font-size: 1.25rem;
+  margin-bottom: 12px;
+}
+
+.supplier-info p {
+  font-size: 1rem;
+  color: var(--text-sub);
+}
+
+/* QC Center */
+.qc-center-section {
+  padding: 120px 0;
+  background: var(--bg-light);
+  text-align: center;
+}
+
+.qc-header h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .supplier-grid { grid-template-columns: 1fr; }
+  .supplier-card { flex-direction: column; }
+}

@@ -1,0 +1,600 @@
+< !DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><title>Vibchip - 质量管理</title><style>
+
+/* 1. 统一全局变量 */
+:root {
+  --primary-blue: #0066ff;
+  --tech-cyan: #00f2ff;
+  --bright-bg: #f4f7fa;
+  --dark-panel: #0a1628;
+  --glass-white: rgba(255, 255, 255, 0.8);
+  --text-dark: #1a2b3c;
+  --text-gray: #5a6b7d;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bright-bg);
+  color: var(--text-dark);
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+
+.site-content {
+  flex: 1;
+  padding: 80px 0;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: var(--dark-panel);
+  border-left: 5px solid var(--primary-blue);
+  padding-left: 20px;
+}
+
+
+.site-header {
+  min-height: 70px;
+}
+
+
+/* --- 新增页面样式 --- */
+.site-content {
+  padding: 0 !important;
+
+}
+
+
+/* --- 修改 Hero Banner 为 6 宫格交互网格 --- */
+.hero-banner {
+  height: calc(100vh - 70px);
+  /* 减去 header 高度实现全屏，可根据 header 实际高度调整 */
+  min-height: 600px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* 3列 */
+  grid-template-rows: repeat(2, 1fr);
+  /* 2行 */
+  overflow: hidden;
+}
+
+.grid-item {
+  position: relative;
+  overflow: hidden;
+  background-image: url('img2/service.jpg');
+  /* 六个格子共用一张背景图 */
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+/* 核心：通过 background-position 将一张大图切分为六份显示在不同格子里 */
+/* 假设原图是宽屏图，通过 300% 200% 的缩放实现精准切分 */
+.item-1 {
+  background-position: 0% 0%;
+  background-size: 300% 200%;
+}
+
+.item-2 {
+  background-position: 50% 0%;
+  background-size: 300% 200%;
+}
+
+.item-3 {
+  background-position: 100% 0%;
+  background-size: 300% 200%;
+}
+
+.item-4 {
+  background-position: 0% 100%;
+  background-size: 300% 200%;
+}
+
+.item-5 {
+  background-position: 50% 100%;
+  background-size: 300% 200%;
+}
+
+.item-6 {
+  background-position: 100% 100%;
+  background-size: 300% 200%;
+}
+
+/* 1. 覆盖层默认状态 */
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 22, 40, 0.6);
+  /* 默认遮罩稍微深一点，确保文字清晰 */
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+}
+
+/* 2. 内容容器保持居中 */
+.grid-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  transition: transform 0.5s ease;
+}
+
+/* 3. 图标样式 */
+.grid-content i {
+  font-size: 3rem;
+  color: var(--tech-cyan);
+  margin-bottom: 15px;
+  transition: all 0.5s ease;
+}
+
+/* 4. 文字默认显示状态 */
+.grid-text {
+  opacity: 0.9;
+  /* 默认略带透明感 */
+  transform: translateY(0);
+  /* 默认位置 */
+  transition: all 0.5s ease;
+}
+
+.grid-text p {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-top: 5px;
+  /* 限制描述文字高度，防止挤出格子 */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* --- 5. 鼠标经过时的交互效果 --- */
+
+/* 悬停时遮罩变蓝 */
+.grid-item:hover .grid-overlay {
+  background: rgba(124, 124, 125, 0.85);
+}
+
+/* 悬停时整体内容轻微上移 */
+.grid-item:hover .grid-content {
+  transform: translateY(-10px);
+}
+
+/* 悬停时图标放大或变色（可选） */
+.grid-item:hover i {
+  color: #fff;
+  transform: scale(1.1);
+}
+
+/* 悬停时文字完全不透明并产生上滑感 */
+.grid-item:hover .grid-text {
+  opacity: 1;
+  /* 这里的滑动效果由 .grid-content 的整体位移带动，
+     如果想让文字单独滑得更多，可以取消下面注释： */
+  /* transform: translateY(-5px); */
+}
+
+/* 响应式适配：手机端变为 1列 6行 */
+@media (max-width: 768px) {
+  .hero-banner {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, 300px);
+    height: auto;
+  }
+}
+
+
+
+
+/* 2. 服务区样式 */
+.service-section {
+  background-color: #f0f2f5;
+  padding: 100px 0;
+  width: 100%;
+}
+
+.service-layout {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 50px;
+  align-items: start;
+}
+
+
+.service-intro .intro-label {
+  color: var(--tech-cyan);
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.service-intro .intro-title {
+  font-size: 2.8rem;
+  color: var(--dark-panel);
+  margin-bottom: 25px;
+  line-height: 1.2;
+}
+
+.service-intro .intro-desc {
+  color: var(--text-gray);
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+
+
+
+
+/* 重新定义网格布局：左侧一列占 1.2倍，右侧一列占 1倍 */
+.service-masonry {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  grid-template-rows: repeat(3, 100px);
+  /* 右侧三个卡片的高度 */
+  gap: 20px;
+}
+
+/* 第一个大卡片：跨三行显示 */
+.s-card-main {
+  grid-row: span 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 30px !important;
+}
+
+.s-card-main .s-card-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.s-card-main .s-card-img-wrapper {
+  margin-top: 20px;
+  flex: 1;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.s-card-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 普通卡片：横向排列图标和标题 */
+.s-card {
+  background: #fff;
+  border-radius: 15px;
+  padding: 0 25px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  /* 图标与标题水平居中对齐 */
+  gap: 20px;
+  transition: all 0.3s ease;
+}
+
+
+.s-card h4 {
+  font-size: 1.2rem;
+  color: var(--dark-panel);
+  margin: 0;
+  font-weight: 600;
+}
+
+/* 图标容器基础样式 */
+.s-icon-box {
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  background: rgba(0, 242, 255, 0.1);
+  /* 浅青色背景 */
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+/* 图标本身样式 */
+.s-icon-box i {
+  font-size: 1.4rem;
+  color: var(--tech-cyan);
+  /* 使用您的主题青色 */
+  transition: transform 0.3s ease;
+}
+
+
+/* 针对大卡片的图标稍微调大一点 */
+.s-card-main .s-icon-box {
+  width: 55px;
+  height: 55px;
+}
+
+/* 响应式调整 */
+@media (max-width: 850px) {
+  .service-masonry {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .s-card-main {
+    grid-row: auto;
+    height: 350px;
+  }
+
+  .s-card {
+    height: 80px;
+  }
+}
+
+
+
+
+
+
+
+/* --- 全宽图文交替板块样式 --- */
+.feature-section {
+  width: 100%;
+  padding: 100px 0;
+  background-color: #fff;
+  /* 默认白色背景 */
+}
+
+/* 奇数行背景微调，增加层次感 */
+.feature-section:nth-child(odd) {
+  background-color: #f9fbff;
+}
+
+.feature-row {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+}
+
+/* 关键：偶数行反转图片和文字的方向 */
+.feature-section:nth-child(even) .feature-row {
+  flex-direction: row-reverse;
+}
+
+.feature-image {
+  flex: 1;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 102, 255, 0.1);
+}
+
+.feature-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.feature-image:hover img {
+  transform: scale(1.05);
+}
+
+.feature-content {
+  flex: 1;
+}
+
+.feature-content h2 {
+  font-size: 2.4rem;
+  color: var(--dark-panel);
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.feature-content h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  width: 50px;
+  height: 4px;
+  background: var(--primary-blue);
+}
+
+.feature-content p {
+  font-size: 1.1rem;
+  color: var(--text-gray);
+  margin-bottom: 30px;
+  line-height: 1.8;
+}
+
+.feature-list {
+  list-style: none;
+}
+
+.feature-list li {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+.feature-list li::before {
+  content: '✓';
+  margin-right: 15px;
+  color: var(--primary-blue);
+  font-weight: bold;
+  background: rgba(0, 102, 255, 0.1);
+  width: 25px;
+  height: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 14px;
+}
+
+@media (max-width: 992px) {
+
+  .feature-row,
+  .feature-section:nth-child(even) .feature-row {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .feature-image,
+  .feature-content {
+    width: 100%;
+  }
+}
+
+
+
+
+
+/* --- 灰色背景：右图左文样式 --- */
+.feature-grey {
+  width: 100%;
+  padding: 100px 0;
+  background-color: #f4f7fa;
+  /* 偏灰色的背景色 */
+}
+
+.feature-grey .feature-row {
+  display: flex;
+  flex-direction: row-reverse;
+  /* 强制图片在右，文字在左 */
+  align-items: center;
+  gap: 80px;
+}
+
+/* 这里的样式复用之前的逻辑，保持视觉统一 */
+.feature-grey .feature-image {
+  flex: 1;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+}
+
+.feature-grey .feature-image img {
+  width: 100%;
+  display: block;
+}
+
+.feature-grey .feature-content {
+  flex: 1;
+}
+
+.feature-grey .feature-content h2 {
+  font-size: 2.4rem;
+  color: var(--dark-panel);
+  margin-bottom: 25px;
+}
+
+/* 仿制图片中的蓝色方框打钩列表 */
+.check-list {
+  list-style: none;
+  margin-top: 30px;
+}
+
+.check-list li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  color: var(--text-dark);
+  font-size: 1rem;
+}
+
+.check-list li::before {
+  content: '✔';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--primary-blue);
+  border-radius: 4px;
+  /* 方形带一点圆角 */
+  margin-right: 15px;
+  color: var(--primary-blue);
+  font-size: 12px;
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+</style></head><body><div class="layout-wrapper"><header id="header-placeholder" class="site-header"></header><main class="site-content"><section class="hero-banner"><div class="grid-item item-1"><div class="grid-overlay"><div class="grid-content"><i class="fa-solid fa-wind"></i><div class="grid-text"><h3>Renewable Energy</h3>< !-- <p>为光伏与风能发电提供工业级高可靠性功率器件方案。</p>--></div></div></div></div><div class="grid-item item-2"><div class="grid-overlay"><div class="grid-content"><i class="fa-solid fa-heart-pulse"></i><div class="grid-text"><h3>Medical Electronics</h3>< !-- <p>高精度传感器与处理芯片，助力精准医疗与生命监测设备。</p>--></div></div></div></div><div class="grid-item item-3"><div class="grid-overlay"><div class="grid-content"><i class="fa-solid fa-microchip"></i><div class="grid-text"><h3>Telecommunication</h3>< !-- <p>提供高性能模数转换与精密仪表组件，确保测量数据万无一失。</p>--></div></div></div></div><div class="grid-item item-4"><div class="grid-overlay"><div class="grid-content"><i class="fa-solid fa-car-side"></i><div class="grid-text"><h3>Automotive Electronics</h3>< !-- <p>车规级芯片供应链支持，助力自动驾驶与座舱智能化。</p>--></div></div></div></div><div class="grid-item item-5"><div class="grid-overlay"><div class="grid-content"><i class="fa-solid fa-server"></i><div class="grid-text"><h3>EMS</h3>< !-- <p>高速存储与高效散热管理芯片，支撑大规模云计算基础设施。</p>--></div></div></div></div><div class="grid-item item-6"><div class="grid-overlay"><div class="grid-content"><i class="fa-solid fa-layer-group"></i><div class="grid-text"><h3>AI</h3>< !-- <p>全球化的现货储备，解决短缺物料，优化您的物料清单。</p>--></div></div></div></div></section><section class="service-section"><div class="container service-layout"><div class="service-intro"><h2 class="intro-title">Our Services</h2><p class="intro-desc">At Vibchip,
+we specialize in the design and distribution of electronic components. Backed by a stringent quality control system and global supply chain support,
+we source the most cost-effective and highly reliable semiconductor solutions for you.</p></div><div class="service-masonry"><div class="s-card s-card-main"><div class="s-card-info"><div class="s-icon-box"><i class="fa-solid fa-clock"></i></div><h4>Stock Procurement</h4></div><div class="s-card-img-wrapper"><img src="img2/service6.jpg" alt="Procurement"></div></div><div class="s-card"><div class="s-icon-box"><i class="fa-solid fa-chart-line"></i></div><h4>Lead Time PPV</h4></div><div class="s-card"><div class="s-icon-box"><i class="fa-solid fa-boxes-stacked"></i></div><h4>Excess Solutions</h4></div><div class="s-card"><div class="s-icon-box"><i class="fa-solid fa-list-check"></i></div><h4>BOM Service</h4></div></div></div></section><section class="feature-section"><div class="container feature-row"><div class="feature-image"><img src="img2/service1.png" alt="短缺物料采购"></div><div class="feature-content"><h2>Shortage Part Procurement</h2><p>Develop a scientific procurement strategy in response to procurement changes caused by supply-demand relationships；Seize the initiative in procurement ahead of shortage.</p><ul class="feature-list"><li>Powerful data capabilities to quickly identify component shortages</li><li>Acute analytical skills to be ahead of market trends in component shortages</li><li>Intelligent system to provide real-time access to global supply channel inventory</li></ul></div></div></section><section class="feature-grey"><div class="container feature-row"><div class="feature-image"><img src="img2/service2.png" alt="降低成本策略"
+onerror="this.src='https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=800'"></div><div class="feature-content"><h2>PPV Cost-down Strategy</h2><p>Continuously identify cost-reduction opportunities,
+align with your target price,
+and reduce intermediate cost in your procurement process.</p><ul class="check-list"><li>Equippe with an intelligent data system for real-time component prices updating</li><li>Integrate with multiple major distributors for direct access to the best prices</li><li>A professional procurement team conducts global sourcing to customize electronic component procurement solutions for you.</li></ul></div></div></section><section class="feature-section"><div class="container feature-row"><div class="feature-image"><img src="img2/service3.png" alt="短缺物料采购"></div><div class="feature-content"><h2>Integrated Supplier Service</h2><p>Establish a global network and integrate high-quality suppliers to alleviate your procurement burden while ensuring quality and supply reliability</p><ul class="feature-list"><li>Maintain close collaboration with global suppliers and implement tiered management to rigorously control supplier quality</li><li>Cover comprehensively over 10000+electronic component suppliers and over 10 millions of SKUs</li><li>Respond to customer needs flexibly and efficiently based on stable supplier relationships and a robust management system</li></ul></div></div></section><section class="feature-grey"><div class="container feature-row"><div class="feature-image"><img src="img2/service4.png" alt="降低成本策略"
+
+onerror="this.src='https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=800'"></div><div class="feature-content"><h2>Excess Solutions</h2><p>Based on your inventory status,
+we leverage big data analytics and professional team insights to analyze market demand,
+implement differentiated pricing for your materials,
+and execute multi-channel promotion strategies to formulate the optimal solution for you.</p><ul class="check-list"><li>A dedicated professional team provides personalized services to formulate the optimal inventory management solution</li><li>Turn your inventory into revenue,
+offer inventory consignment and online showcase to your excess inventory</li></ul></div></div></section></main><footer id="footer-placeholder" class="site-footer"></footer></div><script>async function loadComponent(id, url) {
+  try {
+    const response=await fetch(url);
+
+    if ( !response.ok) throw new Error(`无法获取文件: $ {
+        url
+      }
+
+      `);
+    const data=await response.text();
+    document.getElementById(id).innerHTML=data;
+
+    if (id==='header-placeholder') highlightNav();
+  }
+
+  catch (err) {
+    console.error('组件加载失败:', err);
+  }
+}
+
+
+function highlightNav() {
+  const currentPath=window.location.pathname.split("/").pop() || "index.html";
+  const navLinks=document.querySelectorAll('.main-nav a');
+
+  navLinks.forEach(link=> {
+
+      if (link.getAttribute('href')===currentPath) {
+        link.style.color="#00f2ff";
+      }
+    });
+}
+
+// 初始化加载
+window.onload=()=> {
+  loadComponent('header-placeholder', 'header.html');
+  loadComponent('footer-placeholder', 'footer.html');
+}
+
+;
+</script></body></html>

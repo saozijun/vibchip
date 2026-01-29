@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Vibchip - 质量管理</title>
+
+  <style>
+    /* 1. 统一全局变量 - 午夜蓝科技风 */
+    :root {
+      /* 核心色调 */
+      --primary-blue: #2979ff;    /* 亮宝蓝 */
+      --neon-cyan: #2f8aff;       /* 电光青 (高亮/灯光) */
+      
+      /* 背景色阶 */
+      --bg-base: #0a192f;         /* 基础深蓝背景 (Body, Hero, LV1, LV3) */
+      --bg-light: #112240;        /* 稍亮背景 (Services, LV2, LV4) */
+      --bg-darker: #020c1b;       /* 极深背景 (Hero Grid) */
+      
+      /* 文字颜色 */
+      --text-main: #e6f1ff;       /* 冷白 */
+      --text-sub: #8892b0;        /* 蓝灰 */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      /* 全局微弱光晕 */
+      background-image: radial-gradient(circle at 50% 0%, #1a3055 0%, var(--bg-base) 60%);
+    }
+
+    /* 默认容器，但在 Feature Section 中会被覆盖为宽屏 */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .layout-wrapper {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .site-content {
+      flex: 1;
+      padding: 0 !important;
+    }
+
+    /* ==== 顶部 Header 强制覆盖 (蓝灯带) ==== */
+    .site-header {
+      min-height: 70px;
+      background-color: rgba(10, 25, 47, 0.95) !important;
+      background: linear-gradient(to right, #0a192f, #112240) !important;
+      border-bottom: 2px solid var(--neon-cyan) !important;
+    }
+    .site-header a { color: var(--text-main) !important; transition: 0.3s; } 
+    .site-header a:hover { color: var(--neon-cyan) !important; }
+
+
+    /* ==== 1. Hero Banner (六宫格图片) - 科技感改造 ==== */
+    .hero-banner {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px; 
+      padding: 100px 5%; /* 增加内边距 */
+      background-color: var(--bg-darker); /* 深色背景 */
+      border-bottom: 1px solid rgba(47, 138, 255, 0.1);
+    }
+
+    .grid-item {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 16px;
+      background-color: #000;
+      cursor: pointer;
+      /* 默认状态：微弱边框和阴影 */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.4s ease;
+    }
+
+    /* 悬停状态：青色发光 */
+    .grid-item:hover {
+      border-color: var(--neon-cyan);
+      transform: translateY(-5px);
+      z-index: 2;
+    }
+
+    .grid-item img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.6s ease;
+      opacity: 0.8; /* 默认稍微暗一点 */
+    }
+
+    .grid-overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      display: flex; justify-content: center; align-items: flex-end;
+      background: rgba(10, 25, 47, 0.2); 
+      z-index: 2; transition: background 0.4s ease;
+    }
+
+    .grid-content {
+      text-align: center; 
+      /* 默认可见，但稍微下沉 */
+      transform: translateY(-10px); 
+      transition: all 0.4s ease-out;
+    }
+
+    .grid-content h3 {
+      font-family: "微软雅黑";
+      color: #fff; 
+      font-size: 1.4rem; font-weight: 700;  letter-spacing: 2px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+      padding: 10px 20px;
+      border-radius: 30px;
+    }
+
+    /* 悬停交互 */
+    .grid-item:hover img { transform: scale(1.1); opacity: 0.4; } 
+    .grid-item:hover .grid-overlay { background: rgba(10, 25, 47, 0.6); } 
+    .grid-item:hover .grid-content h3 { 
+      color: var(--neon-cyan);
+      border-color: var(--neon-cyan);
+    }
+
+
+    /* ==== 2. Service Section (服务卡片) - 深色磨砂 ==== */
+    .service-section {
+      background-color: var(--bg-light); /* 稍亮背景 */
+      padding: 120px 0;
+      width: 100%;
+      border-top: 1px solid rgba(255,255,255,0.02);
+    }
+
+    .service-layout {
+      display: grid;
+      grid-template-columns: 400px 1fr; /* 左侧文字加宽 */
+      gap: 80px;
+      align-items: start;
+    }
+
+    .service-intro .intro-label {
+      color: var(--neon-cyan);
+      font-size: 1.5rem; letter-spacing: 3px; margin-bottom: 15px; font-weight: bold;
+      /* text-transform: uppercase; */
+    }
+
+    .service-intro .intro-title {
+      font-size: 3.5rem;
+      color: #fff;
+      margin-bottom: 30px;
+      line-height: 1.1;
+    }
+
+    .service-intro .intro-desc {
+      color: var(--text-sub);
+      font-size: 1.2rem;
+      line-height: 1.8;
+    }
+
+    .service-masonry {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      grid-template-rows: repeat(3, 120px); /* 加高卡片 */
+      gap: 25px;
+    }
+
+    .s-card-main {
+      grid-row: span 3;
+      display: flex; flex-direction: column; justify-content: space-between; padding: 40px !important;
+    }
+    .s-card-main .s-card-info { display: flex; align-items: center; gap: 20px; }
+    .s-card-main .s-card-img-wrapper { 
+      margin-top: 30px; flex: 1; border-radius: 12px; overflow: hidden; 
+      border: 1px solid rgba(255,255,255,0.1); 
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .s-card-main img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s;}
+    .s-card-main:hover img { transform: scale(1.05); }
+
+    /* 卡片通用样式 */
+    .s-card {
+      background: rgba(255, 255, 255, 0.03); /* 极淡的玻璃 */
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 0 30px;
+      display: flex; align-items: center; gap: 20px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .s-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--neon-cyan);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .s-card h4 {
+      font-size: 1.4rem; color: #fff; margin: 0; font-weight: 600;
+    }
+
+    /* 图标盒子 */
+    .s-icon-box {
+      width: 60px; height: 60px; min-width: 60px;
+      background: rgba(47, 138, 255, 0.1);
+      border-radius: 15px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(47, 138, 255, 0.2);
+    }
+
+    .s-icon-box i {
+      font-size: 1.8rem;
+      color: var(--neon-cyan);
+      transition: transform 0.3s ease;
+    }
+
+    .s-card:hover .s-icon-box {
+      background: var(--neon-cyan);
+    }
+    .s-card:hover .s-icon-box i { color: #000; }
+
+    @media (max-width: 992px) {
+      .service-layout { grid-template-columns: 1fr; }
+      .service-masonry { grid-template-columns: 1fr; grid-template-rows: auto; }
+      .s-card-main { grid-row: auto; height: 400px; }
+      .s-card { height: 100px; }
+      .hero-banner { grid-template-columns: 1fr; padding: 60px 5%; }
+    }
+
+
+    /* ==== 3. Feature Sections (LV1-LV4) 宽屏大图版 ==== */
+    
+    /* 深色块 (LV1, LV3) */
+    .feature-section {
+      width: 100%; padding: 120px 0;
+      background-color: var(--bg-base);
+      border-top: none;
+    }
+
+    /* 稍亮块 (LV2, LV4) */
+    .feature-grey {
+      width: 100%; padding: 120px 0;
+      background-color: var(--bg-light);
+      border-top: 1px solid rgba(255, 255, 255, 0.02);
+    }
+
+    /* 【核心】：容器强制宽屏 */
+    .feature-section .container, 
+    .feature-grey .container {
+      max-width: 1280px !important;
+    }
+
+    .feature-row { 
+      display: flex; 
+      align-items: center; /* 垂直居中 */
+      gap: 80px; 
+    }
+    
+    .feature-section:nth-child(even) .feature-row,
+    .feature-grey .feature-row { flex-direction: row-reverse; }
+
+    .feature-image {
+      flex: 1; /* 图片占比 60% */
+      height: 380px; /* 强制高度 550px */
+      border-radius: 24px; overflow: hidden;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(100, 255, 218, 0.1);
+    }
+    .feature-image img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease; }
+    .feature-image:hover img { transform: scale(1.03); }
+
+    .feature-content { 
+      flex: 1; /* 文字占比 40% */
+      padding: 0 30px; 
+    }
+
+    /* LV 标签 */
+    .feature-content .lev {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--primary-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700; font-size: 36px; position: relative; 
+      margin-bottom: 20px; display: inline-block;
+    }
+
+    .feature-content h2 {
+      font-size: 2.8rem; color: #fff; margin-bottom: 25px; position: relative; line-height: 1.2;
+    }
+    .feature-content h2::after {
+      content: ''; position: absolute; left: 0; bottom: -10px; width: 60px; height: 5px;
+      background: var(--neon-cyan);
+    }
+
+    .feature-content p {
+      font-size: 1.2rem; color: var(--text-sub); margin-bottom: 35px; line-height: 1.8;
+    }
+
+    .feature-list, .check-list { list-style: none; }
+    
+    .feature-list li, .check-list li {
+      margin-bottom: 18px; display: flex; align-items: flex-start;
+      color: var(--text-main); font-weight: 500; font-size: 1.2rem;
+      gap: 15px;
+    }
+
+    /* 列表图标：FontAwesome 或 自定义 */
+    .feature-list li::before, .check-list li::before {
+      font-family: "Font Awesome 6 Free"; font-weight: 900; content: '\f00c';
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px;
+      background: rgba(47, 138, 255, 0.15);
+      color: var(--neon-cyan);
+      border: 1px solid var(--neon-cyan);
+      border-radius: 50%;
+      font-size: 14px; flex-shrink: 0; margin-top: 3px;
+    }
+
+    @media (max-width: 992px) {
+      .feature-row, .feature-section:nth-child(even) .feature-row, .feature-grey .feature-row {
+        flex-direction: column; gap: 40px;
+      }
+      .feature-image, .feature-content { width: 100%; flex: auto; }
+      .feature-image { height: 350px; }
+      .feature-content { padding: 0; }
+    }
+
+
+    /* ==== 底部 Footer 强制覆盖 (蓝灯带) ==== */
+    .site-footer {
+      background-color: #0a192f !important;
+      background: linear-gradient(to bottom, #112240, #0a192f) !important;
+      border-top: 2px solid var(--neon-cyan) !important;
+      color: var(--text-sub) !important;
+      padding-top: 80px;
+    }
+    
+    .site-footer h4, .link-group h4 {
+      color: var(--neon-cyan) !important;
+      text-transform: uppercase;
+    }
+    
+    .site-footer a, .link-group ul li a { color: #8892b0 !important; transition: 0.3s; }
+    .site-footer a:hover, .link-group ul li a:hover {
+      color: var(--neon-cyan) !important;
+      padding-left: 5px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="layout-wrapper">
+
+    <header id="header-placeholder" class="site-header"></header>
+
+    <main class="site-content">
+
+      <!-- Hero Banner: 图片墙 -->
+      <section class="hero-banner">
+        <div class="grid-item">
+          <img src="img2/sun.png" alt="Photovoltaic">
+          <div class="grid-overlay">
+            <div class="grid-content">
+              <h3>Photovoltaic</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-item">
+          <img src="img2/med.png" alt="Medical">
+          <div class="grid-overlay">
+            <div class="grid-content">
+              <h3>Medical</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-item">
+          <img src="img2/intne.png" alt="Power Supply">
+          <div class="grid-overlay">
+            <div class="grid-content">
+              <h3>Power Supply</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-item">
+          <img src="img2/car.png" alt="Automobile">
+          <div class="grid-overlay">
+            <div class="grid-content">
+              <h3>Automobile</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-item">
+          <img src="img2/emc.png" alt="Communication">
+          <div class="grid-overlay">
+            <div class="grid-content">
+              <h3>Communication</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-item">
+          <img src="img2/service6.jpg" alt="EMS">
+          <div class="grid-overlay">
+            <div class="grid-content">
+              <h3>EMS</h3>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Service Masonry: 服务卡片 -->
+      <section class="service-section">
+        <div class="container service-layout">
+          <div class="service-intro">
+            <p class="intro-label">Core Advantages</p>
+            <h2 class="intro-title">Our Services</h2>
+            <p class="intro-desc">Vibchip delivers expert electronic component sourcing and supply chain optimization,
+              dedicated to maximizing cost efficiency for our clients.</p>
+          </div>
+
+          <div class="service-masonry">
+            <div class="s-card s-card-main">
+              <div class="s-card-info">
+                <div class="s-icon-box">
+                  <i class="fa-solid fa-clock"></i>
+                </div>
+                <h4>Stock Procurement</h4>
+              </div>
+              <div class="s-card-img-wrapper">
+                <img src="img2/service7.jpg" alt="Procurement">
+              </div>
+            </div>
+
+            <div class="s-card">
+              <div class="s-icon-box">
+                <i class="fa-solid fa-chart-line"></i>
+              </div>
+              <h4>Lead Time PPV</h4>
+            </div>
+
+            <div class="s-card">
+              <div class="s-icon-box">
+                <i class="fa-solid fa-boxes-stacked"></i>
+              </div>
+              <h4>Excess Solutions</h4>
+            </div>
+
+            <div class="s-card">
+              <div class="s-icon-box">
+                <i class="fa-solid fa-list-check"></i>
+              </div>
+              <h4>BOM Service</h4>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- LV1 (深色) -->
+      <section class="feature-section">
+        <div class="container feature-row">
+          <div class="feature-image">
+            <img src="img2/service8.jpg" alt="Shortage">
+          </div>
+          <div class="feature-content">
+            <p class="lev">lv1</p>
+            <h2>Shortage Part Procurement</h2>
+            <p>Develop a scientific procurement strategy in response to procurement changes caused by supply-demand
+              relationships；Seize the initiative in procurement ahead of shortage.</p>
+            <ul class="feature-list">
+              <li>Powerful data capabilities to quickly identify component shortages</li>
+              <li>Acute analytical skills to be ahead of market trends in component shortages</li>
+              <li>Intelligent system to provide real-time access to global supply channel inventory</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- LV2 (稍亮色) -->
+      <section class="feature-grey">
+        <div class="container feature-row">
+          <div class="feature-image">
+            <img src="img2/service2.png" alt="Cost-down">
+          </div>
+
+          <div class="feature-content">
+            <p class="lev">lv2</p>
+            <h2>PPV Cost-down Strategy</h2>
+            <p>Continuously identify cost-reduction opportunities, align with your target price, and reduce intermediate
+              cost in your procurement process.</p>
+
+            <ul class="check-list">
+              <li>Equippe with an intelligent data system for real-time component prices updating</li>
+              <li>Integrate with multiple major distributors for direct access to the best prices</li>
+              <li>A professional procurement team conducts global sourcing to customize electronic component procurement
+                solutions for you.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- LV3 (深色) -->
+      <section class="feature-section">
+        <div class="container feature-row">
+          <div class="feature-image">
+            <img src="img2/about2.jpg" alt="Integrated Supplier">
+          </div>
+          <div class="feature-content">
+            <p class="lev">lv3</p>
+            <h2>Integrated Supplier Service</h2>
+            <p>Establish a global network and integrate high-quality suppliers to alleviate your procurement burden
+              while ensuring quality and supply reliability</p>
+            <ul class="feature-list">
+              <li>Maintain close collaboration with global suppliers and implement tiered management to rigorously
+                control supplier quality</li>
+              <li>Cover comprehensively over 10000+ electronic component suppliers and over 10 millions of SKUs</li>
+              <li>Respond to customer needs flexibly and efficiently based on stable supplier relationships and a robust
+                management system</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- LV4 (稍亮色) -->
+      <section class="feature-grey">
+        <div class="container feature-row">
+          <div class="feature-image">
+            <img src="img2/service4.png" alt="Excess Solutions">
+          </div>
+
+          <div class="feature-content">
+            <p class="lev">lv4</p>
+            <h2>Excess Solutions</h2>
+            <p>Based on your inventory status, we leverage big data analytics and professional team insights to analyze
+              market demand, implement differentiated pricing for your materials, and execute multi-channel promotion
+              strategies to formulate the optimal solution for you.</p>
+
+            <ul class="check-list">
+              <li>A dedicated professional team provides personalized services to formulate the optimal inventory
+                management solution</li>
+              <li>Turn your inventory into revenue, offer inventory consignment and online showcase to your excess
+                inventory</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer id="footer-placeholder" class="site-footer"></footer>
+
+  </div>
+
+  <script>
+    async function loadComponent(id, url) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.text();
+        const element = document.getElementById(id);
+        if (element) {
+          element.innerHTML = data;
+          if (id === 'header-placeholder') highlightNav();
+        }
+      } catch (err) {
+        console.error('加载失败:', url, err);
+      }
+    }
+
+    // 立即执行
+    loadComponent('header-placeholder', 'header.html');
+    loadComponent('footer-placeholder', 'footer.html');
+
+    function highlightNav() {
+      const currentPath = window.location.pathname.split("/").pop() || "index.html";
+      const navLinks = document.querySelectorAll('.main-nav a');
+      navLinks.forEach(link => {
+        // 如果你需要高亮逻辑，可以在这里添加
+        if (link.getAttribute('href') === currentPath) {
+          link.style.color = "#2f8aff";
+        }
+      });
+    }
+
+  </script>
+</body>
+
+</html>

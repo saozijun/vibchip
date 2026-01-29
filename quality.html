@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Vibchip - 质量管理</title>
+
+  <style>
+    /* ==== 1. 统一全局变量 - 午夜蓝科技风 ==== */
+    :root {
+      --primary-blue: #2979ff;
+      --neon-cyan: #2f8aff;
+      --bg-base: #0a192f;
+      --bg-light: #112240;
+      --bg-darker: #020c1b;
+      --text-main: #e6f1ff;
+      --text-sub: #8892b0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-image: radial-gradient(circle at 50% 0%, #1a3055 0%, var(--bg-base) 60%);
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .layout-wrapper {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .site-content {
+      flex: 1;
+      padding: 0 !important;
+    }
+
+    /* ==== 顶部 Header ==== */
+    .site-header {
+      min-height: 70px;
+      background-color: rgba(10, 25, 47, 0.95) !important;
+      background: linear-gradient(to right, #0a192f, #112240) !important;
+      border-bottom: 2px solid var(--neon-cyan) !important;
+    }
+    .site-header a { color: var(--text-main) !important; } 
+    .site-header a:hover { color: var(--neon-cyan) !important; }
+
+
+    /* ==== 1. Hero Banner ==== */
+    .hero-banner {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px; 
+      padding: 100px 5%; 
+      background-color: var(--bg-darker); 
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .grid-item {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 12px;
+      background-color: #000;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(47, 138, 255, 0.1);
+      transition: all 0.4s ease;
+    }
+
+    .grid-item:hover {
+      border-color: var(--neon-cyan);
+      transform: translateY(-5px);
+    }
+
+    .grid-item img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.6s ease;
+    }
+
+    .grid-overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      display: flex; justify-content: center; align-items: center;
+      background: rgba(10, 25, 47, 0); 
+      z-index: 2; transition: background 0.4s ease;
+    }
+
+    .grid-content {
+      text-align: center; opacity: 0; transform: translateY(20px); transition: all 0.4s ease-out;
+    }
+
+    .grid-content h3 {
+      color: var(--neon-cyan); 
+      font-size: 1.2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+      text-shadow: 0 0 10px rgba(0,0,0,0.8);
+    }
+
+    .grid-item:hover img { transform: scale(1.1); opacity: 0.3; } 
+    .grid-item:hover .grid-overlay { background: rgba(10, 25, 47, 0.7); } 
+    .grid-item:hover .grid-content { opacity: 1; transform: translateY(0); }
+
+
+    /* ==== 2. Service Masonry Section ==== */
+    .service-section {
+      background-color: var(--bg-base); 
+      padding: 100px 0;
+      width: 100%;
+    }
+
+    .service-layout {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 50px;
+      align-items: start;
+    }
+
+    .service-intro .intro-label {
+      color: var(--neon-cyan);
+      font-size: 0.9rem; letter-spacing: 2px; margin-bottom: 10px; font-weight: bold;
+    }
+
+    .service-intro .intro-title {
+      font-size: 2.8rem; color: #fff; margin-bottom: 25px; line-height: 1.2;
+    }
+
+    .service-intro .intro-desc {
+      color: var(--text-sub); font-size: 1.1rem; line-height: 1.8;
+    }
+
+    .service-masonry {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      grid-template-rows: repeat(3, 100px);
+      gap: 20px;
+    }
+
+    .s-card-main {
+      grid-row: span 3;
+      display: flex; flex-direction: column; justify-content: space-between; padding: 30px !important;
+    }
+    .s-card-main .s-card-info { display: flex; align-items: center; gap: 20px; }
+    .s-card-main .s-card-img-wrapper { margin-top: 20px; flex: 1; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+    .s-card-main img { width: 100%; height: 100%; object-fit: cover; }
+
+    .s-card {
+      background: var(--bg-section-1);
+      border: 1px solid rgba(47, 138, 255, 0.1);
+      border-radius: 15px;
+      padding: 0 25px;
+      display: flex; align-items: center; gap: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .s-card h4 {
+      font-size: 1.2rem; color: #fff; margin: 0; font-weight: 600;
+    }
+
+    .s-icon-box {
+      width: 50px; height: 50px; min-width: 50px;
+      background: rgba(47, 138, 255, 0.1);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(47, 138, 255, 0.2);
+    }
+
+    .s-icon-box i {
+      font-size: 1.4rem; color: var(--neon-cyan);
+    }
+
+    @media (max-width: 850px) {
+      .service-masonry { grid-template-columns: 1fr; grid-template-rows: auto; }
+      .s-card-main { grid-row: auto; height: 350px; }
+      .s-card { height: 80px; }
+    }
+
+
+    /* ==== 3. Feature Sections (LV1-LV4) ==== */
+    .feature-section, .feature-grey {
+      width: 100%; padding: 100px 0;
+      background-color: var(--bg-base);
+      border-top: 1px solid rgba(255, 255, 255, 0.02);
+    }
+    
+    .feature-grey { background-color: var(--bg-light); }
+
+    .feature-section .container, .feature-grey .container {
+      max-width: 1280px !important;
+    }
+
+    .feature-row { display: flex; align-items: center; gap: 80px; }
+    .feature-section:nth-child(even) .feature-row, .feature-grey .feature-row { flex-direction: row-reverse; }
+
+    .feature-image {
+      flex: 1; height: 380px; border-radius: 24px; overflow: hidden;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(47, 138, 255, 0.1);
+    }
+    .feature-image img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+
+    .feature-content { flex: 1; padding: 0 30px; }
+
+    .feature-content .lev {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--primary-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700; font-size: 36px; position: relative; margin-bottom: 20px; display: inline-block;
+    }
+
+    .feature-content h2 {
+      font-size: 2.8rem; color: #fff; margin-bottom: 25px; position: relative; line-height: 1.2;
+    }
+    .feature-content h2::after {
+      content: ''; position: absolute; left: 0; bottom: -10px; width: 60px; height: 5px;
+      background: var(--neon-cyan);
+    }
+
+    .feature-content p { font-size: 1.2rem; color: var(--text-sub); margin-bottom: 35px; line-height: 1.8; }
+
+    /* ---- 列表样式 ---- */
+    .feature-list, .check-list { list-style: none; }
+    .feature-list li, .check-list li {
+      margin-bottom: 15px; display: flex; align-items: flex-start;
+      color: var(--text-main); font-weight: 500; line-height: 1.6;
+    }
+
+    /* 【核心修改】：图标强制为纯白色 */
+    .feature-list li img, 
+    .check-list li img,
+    .feature-content img {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      margin-top: 4px; 
+      margin-right: 15px;
+      object-fit: contain;
+      /* 滤镜：强制变白 */
+      filter: brightness(0) invert(1) !important;
+    }
+
+    @media (max-width: 992px) {
+      .feature-row { flex-direction: column; gap: 40px; }
+      .feature-image { height: 350px; }
+      .feature-image, .feature-content { width: 100%; flex: auto; }
+    }
+
+
+    /* ==== 4. Supplier & QC Sections ==== */
+    .supplier-section, .qc-center-section {
+      padding: 100px 0; background-color: var(--bg-base); text-align: center;
+    }
+    .qc-center-section { background-color: var(--bg-light); }
+
+    .section-header h2, .qc-header h2 { font-size: 2.8rem; color: #fff; margin-bottom: 20px; }
+    .section-header p, .qc-header p { color: var(--text-sub); font-size: 1.1rem; max-width: 800px; margin: 0 auto; }
+
+    .supplier-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px 60px; text-align: left; margin-top: 50px; }
+    .supplier-card { display: flex; align-items: flex-start; gap: 20px; }
+    .supplier-icon {
+      width: 60px; height: 60px; min-width: 60px; border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      color: var(--neon-cyan); font-size: 1.5rem; transition: 0.3s;
+    }
+    .supplier-info h4 { font-size: 1.4rem; color: #fff; margin-bottom: 12px; }
+
+    .qc-gallery { display: grid; grid-template-columns: 1.2fr 1.0fr; gap: 15px; margin-top: 30px; }
+    .qc-main-img, .qc-side-item { border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+    .qc-gallery img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+
+    /* ==== 底部 Footer ==== */
+    .site-footer {
+      background-color: #0a192f !important;
+      background: linear-gradient(to bottom, #112240, #0a192f) !important;
+      border-top: 2px solid var(--neon-cyan) !important;
+      color: var(--text-sub) !important;
+      padding-top: 80px;
+    }
+    .site-footer h4 { color: var(--neon-cyan) !important; text-transform: uppercase; }
+    .site-footer a { color: #8892b0 !important; transition: 0.3s; }
+    .site-footer a:hover { color: var(--neon-cyan) !important; padding-left: 5px; }
+
+  </style>
+</head>
+
+<body>
+  <div class="layout-wrapper">
+
+    <header id="header-placeholder" class="site-header"></header>
+
+    <main class="site-content">
+
+      <!-- LV1 -->
+      <section class="feature-section">
+        <div class="container feature-row">
+          <div class="feature-image">
+            <img src="img2/service1.png" alt="Visual Inspection">
+          </div>
+          <div class="feature-content">
+            <p class="lev">lv1</p>
+            <h2>Initial Visual Inspection</h2>
+            <p>Our Quality Control (QC) team conducts comprehensive visual inspections of all electronic components,
+              both internally and externally.</p>
+            <ul class="feature-list" id="feature-list">
+              <li><img src="img2/icon001.png" alt="">
+                Documentation Verification: Meticulously reviewing shipping documents, packing lists, invoices, and
+                delivery orders to ensure administrative accuracy.</li>
+              <li><img src="img2/icon001.png" alt="">
+                Packaging Inspection: Examining outer cartons, inner boxes, vacuum packaging, pallets, tape reels,
+                and ESD (Electrostatic Discharge) protection measures.</li>
+              <li><img src="img2/icon001.png" alt="">
+                Label Verification: Verifying the accuracy of label information, including product names, part
+                numbers, quantities, date codes, and traceability codes.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- LV2 (Grey -> Light BG) -->
+      <section class="feature-grey">
+        <div class="container feature-row">
+          <div class="feature-image"  style="height: 360px;">
+            <img src="img2/quality2.png" alt="Engineering Validation">
+          </div>
+
+          <div class="feature-content">
+            <p class="lev">lv2</p>
+            <h2>Engineering Validation</h2>
+            <p>To ensure uncompromising reliability, we subject every component to strict Lead Inspection, Scratch
+              Testing, Acetone Resistance Testing, and Marking Permanency Verification.</p>
+
+            <ul class="check-list" id="check-list2">
+              <li><img src="img2/icon002.png" alt="">Label Re-verification: We cross-reference incoming labels against our system database and golden
+                samples to ensure 100% data accuracy.</li>
+              <li><img src="img2/icon002.png" alt="">Marking Re-inspection: Markings are validated through rigorous solvent (chemical) resistance and
+                scratch testing to ensure permanence.</li>
+              <li><img src="img2/icon002.png" alt="">Component Re-validation: We meticulously inspect and compare the casing, leads, and dimensions against
+                strict specifications.</li>
+              <li><img src="img2/icon002.png" alt="">X-Ray Inspection: We utilize advanced X-ray technology to examine the die, package structure, and
+                bonding wires, comparing them against our golden samples for structural integrity.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- LV3 -->
+      <section class="feature-section">
+        <div class="container feature-row">
+          <div class="feature-image">
+            <img src="img2/quality4.jpg" alt="Electrical Performance">
+          </div>
+          <div class="feature-content">
+            <p class="lev">lv3</p>
+            <h2>Electrical Performance & Environmental Compliance Testing</h2>
+            <p>We combine cutting-edge industry technology with insights derived from our proprietary internal database.
+            </p>
+            <ul class="feature-list" id="feature-list2">
+              <li><img src="img2/icon003.png" alt="">Solderability Testing</li>
+              <li><img src="img2/icon003.png" alt="">Decapsulation Analysis</li>
+              <li><img src="img2/icon003.png" alt="">Electrical Performance Testing</li>
+              <li><img src="img2/icon003.png" alt="">RoHS Compliance Verification</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- LV4 -->
+      <section class="feature-grey">
+        <div class="container feature-row">
+          <div class="feature-image">
+            <img src="img2/quality8.png" style="object-position: bottom;" alt="Partnerships">
+          </div>
+
+          <div class="feature-content">
+            <p class="lev">lv4</p>
+            <h2>Validation Through Accredited Partnerships</h2>
+            <p><img src="img2/icon004.png" style="width:32px; height:32px; vertical-align:middle; margin-right:10px; filter:invert(1) brightness(2) drop-shadow(0 0 2px var(--neon-cyan));" alt="">Our commitment to providing safe, reliable, and flawless products is underpinned by our proprietary QC
+              laboratory. </p>
+            <p><img src="img2/icon004.png" style="width:32px; height:32px; vertical-align:middle; margin-right:10px; filter:invert(1) brightness(2) drop-shadow(0 0 2px var(--neon-cyan));" alt="">Additionally, we collaborate with leading international testing partners such as CECC Laboratories, White
+              Horse, and Global ETS to ensure compliance with the highest industry standards.</p>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- Supplier Section -->
+      <section class="supplier-section">
+        <div class="container">
+          <div class="section-header">
+            <h2>Supplier Qualification</h2>
+            <p>Vibchip's supplier qualification process rigorously vets potential electronic component manufacturers and
+              suppliers, reinforcing anti-counterfeit prevention and avoidance measures at every step.</p>
+          </div>
+
+          <div class="supplier-grid">
+
+            <div class="supplier-card">
+              <div class="supplier-icon">
+                <i class="fa-solid fa-user-check"></i>
+              </div>
+              <div class="supplier-info">
+                <h4>Supplier Selection</h4>
+                <p>Prior to adding any supplier to our Approved Vendor List (AVL), we conduct a thorough vetting of
+                  their reputation, performance, and operational standards. Our process includes a rigorous review of
+                  the potential partner's industry standing, track record, and references.</p>
+              </div>
+            </div>
+
+            <div class="supplier-card">
+              <div class="supplier-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+              <div class="supplier-info">
+                <h4>Enforcing Quality Standards</h4>
+                <p>Our supplier partners must consistently meet our stringent quality standards to maintain their status
+                  in our Approved Vendor List (AVL). We foster open and honest communication to proactively address
+                  challenges and ensure a mutually beneficial partnership.</p>
+              </div>
+            </div>
+
+            <div class="supplier-card">
+              <div class="supplier-icon">
+                <i class="fa-solid fa-clipboard-check"></i>
+              </div>
+              <div class="supplier-info">
+                <h4>Authentic, New and Original</h4>
+                <p>Vibchip takes every precaution to ensure customers receive authorized, genuine components sourced
+                  directly from the Original Component Manufacturers (OCMs) or their authorized distributors.</p>
+              </div>
+            </div>
+
+            <div class="supplier-card">
+              <div class="supplier-icon">
+                <i class="fa-solid fa-boxes-stacked"></i>
+              </div>
+              <div class="supplier-info">
+                <h4>Supplier Rating System</h4>
+                <p>Following an extensive qualification process, our network of over 3,000 certified suppliers is
+                  organized into a performance-based quality tier system. This structure prioritizes sourcing from
+                  suppliers with the lowest risk profiles and the highest quality standards.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+
+      <!-- QC Center Section -->
+      <section class="qc-center-section">
+        <div class="container qc-container">
+
+          <div class="qc-header">
+            <h2>Quality Control Center</h2>
+            <p>Vibchip's strategic facilities are designed to support the rigorous inspection and testing of a wide
+              range of electronic components.</p>
+          </div>
+
+        </div>
+      </section>
+
+
+    </main>
+
+    <footer id="footer-placeholder" class="site-footer"></footer>
+
+  </div>
+
+  <script>
+    async function loadComponent(id, url) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.text();
+        const element = document.getElementById(id);
+        if (element) {
+          element.innerHTML = data;
+          if (id === 'header-placeholder') highlightNav();
+        }
+      } catch (err) {
+        console.error('加载失败:', url, err);
+      }
+    }
+
+    // 立即执行，不要等 onload
+    loadComponent('header-placeholder', 'header.html');
+    loadComponent('footer-placeholder', 'footer.html');
+
+    function highlightNav() {
+      const currentPath = window.location.pathname.split("/").pop() || "index.html";
+      const navLinks = document.querySelectorAll('.main-nav a');
+      navLinks.forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+          link.style.color = "#2f8aff";
+        }
+      });
+    }
+
+  </script>
+</body>
+
+</html>

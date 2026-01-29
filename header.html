@@ -1,0 +1,123 @@
+<style>
+  .site-header {
+    background: rgba(10, 22, 40, 0.95);
+    backdrop-filter: blur(15px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .header-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+  }
+
+  .header-logo img {
+    height: 150px;
+    margin-top: 10px;
+  }
+
+  .main-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 35px;
+  }
+
+  .main-nav a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.2rem;
+    transition: 0.3s;
+    letter-spacing: 1px;
+  }
+
+  .main-nav a:hover {
+    color: var(--tech-cyan);
+  }
+
+
+  /* 导航项容器 */
+  .has-dropdown {
+    position: relative;
+    /* 作为下拉盒子的定位参考 */
+  }
+
+
+
+  /* 修改后的下拉盒子定位样式 */
+  .dropdown-box {
+    display: none;
+    position: absolute;
+    top: 180%;
+    /* 紧贴 Header 底部 */
+    left: -10%;
+    /* 移动到父元素(Quality)的中心点 */
+    transform: translateX(-50%);
+    /* 向左偏移自身宽度的50%，实现水平居中 */
+
+    height: 90px;
+    width: auto;
+    min-width: 280px;
+    /* 建议稍微调大最小宽度，避免文字显得太挤 */
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    /* 圆角稍微调大，更现代 */
+    padding: 0 25px;
+    /* 左右留白 */
+    z-index: 1000;
+    border-top: 4px solid var(--primary-blue);
+    white-space: nowrap;
+  }
+
+  /* 覆盖 hover 时的动画，因为增加了 translateX，需要合并动画 */
+  .has-dropdown:hover .dropdown-box {
+    display: block;
+    animation: fadeInCenter 0.3s ease forwards;
+  }
+
+  @keyframes fadeInCenter {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -10px);
+      /* 初始位置略微靠上 */
+    }
+
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0);
+      /* 回到正下方中心 */
+    }
+  }
+</style>
+
+<div class="container header-flex">
+  <h1 class="header-logo">
+    <img src="img/logo.png" alt="Vibchip"
+      onerror="this.src='https://via.placeholder.com/150x50/0a1628/2f8aff?text=Vibchip'">
+  </h1>
+  <nav class="main-nav">
+    <ul>
+      <li><a href="index.html">About</a></li>
+      <li><a href="service.html">Services</a></li>
+      <li class="nav-item has-dropdown">
+        <a href="quality.html">Quality</a>
+        <div class="dropdown-box">
+          <div class="dropdown-content">
+            <h4 class="dropdown-title">Quality Control Process</h4>
+            <p class="dropdown-desc">Vibchip is committed to rigorous testing processes that prioritize quality,
+              efficiency, and excellence.</p>
+            <p> We ensure every product undergoes comprehensive validation at every level
+              prior to shipment.</p>
+            </p>
+          </div>
+        </div>
+      </li>
+      <li><a href="product.html">Product</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</div>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibchip - STRONG LINES</title>
+
+  <style>
+    /* ==== 1. 统一全局变量 - 午夜蓝科技风 ==== */
+    :root {
+      --primary-blue: #2979ff;    /* 亮宝蓝 */
+      --neon-cyan: #2f8aff;       /* 电光青 (高亮/灯光) */
+      --bg-base: #0a192f;         /* 基础深蓝背景 */
+      --bg-light: #112240;        /* 稍亮背景 (卡片容器) */
+      --text-main: #e6f1ff;       /* 冷白 */
+      --text-sub: #8892b0;        /* 蓝灰 */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      /* 全局微弱光晕 */
+      background-image: radial-gradient(circle at 50% 0%, #1a3055 0%, var(--bg-base) 60%);
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .layout-wrapper {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    /* ==== 顶部 Header 强制覆盖 (蓝灯带) ==== */
+    .site-header {
+      min-height: 70px;
+      background-color: rgba(10, 25, 47, 0.95) !important;
+      background: linear-gradient(to right, #0a192f, #112240) !important;
+      border-bottom: 2px solid var(--neon-cyan) !important;
+    }
+    .site-header a { color: var(--text-main) !important; transition: 0.3s; }
+    .site-header a:hover { color: var(--neon-cyan) !important; }
+
+    .site-content {
+      padding: 80px 0;
+      flex: 1;
+    }
+
+    /* ==== 页面标题样式 ==== */
+    .page-title {
+      font-size: 2.8rem;
+      margin-bottom: 40px;
+      color: #fff;
+      border-left: none; /* 去掉原来的实线 */
+      padding-left: 0;
+      position: relative;
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    /* 标题下方的青色短线 */
+    .page-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -10px;
+      width: 60px;
+      height: 4px;
+      background: var(--neon-cyan);
+    }
+
+    /* ==== Grid 容器装饰 ==== */
+    .grid-container-box {
+      /* 背景改为深蓝透明质感 */
+      background: rgba(17, 34, 64, 0.6); 
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      margin-top: 30px;
+    }
+
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 15px;
+    }
+
+    /* ==== Logo 卡片样式 ==== */
+    .image-card {
+      /* 背景色改为冷灰色调，能更好地衬托各种颜色的Logo */
+      background: #f8faff; 
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 130px;
+      padding: 10px;
+    }
+
+    /* 卡片悬停效果 */
+    .image-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      background: #ffffff; /* 悬停时提亮 */
+      border-color: var(--neon-cyan);
+    }
+
+    .image-card img {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+      display: block;
+      /* 增强Logo图片的清晰度 */
+      filter: contrast(1.05);
+      transition: transform 0.3s ease;
+    }
+
+    .image-card:hover img {
+      transform: scale(1.1);
+    }
+
+    /* ==== 底部 Footer 强制覆盖 (蓝灯带) ==== */
+    .site-footer {
+      background-color: #0a192f !important;
+      background: linear-gradient(to bottom, #112240, #0a192f) !important;
+      border-top: 2px solid var(--neon-cyan) !important;
+      color: var(--text-sub) !important;
+      padding-top: 80px;
+    }
+    .site-footer h4 { color: var(--neon-cyan) !important; text-transform: uppercase; }
+    .site-footer a { color: #8892b0 !important; transition: 0.3s; }
+    .site-footer a:hover { color: var(--neon-cyan) !important; padding-left: 5px; }
+
+    /* ==== 响应式适配 ==== */
+    @media (max-width: 1200px) {
+      .image-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .image-grid { grid-template-columns: repeat(2, 1fr); }
+      .grid-container-box { padding: 20px; }
+      .page-title { font-size: 2rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layout-wrapper">
+
+    <header id="header-placeholder" class="site-header"></header>
+
+    <main class="site-content">
+      <div class="container">
+        <h2 class="page-title">STRONG LINES</h2>
+
+        <div class="grid-container-box">
+          <div class="image-grid" id="imageGrid">
+
+            <div class="image-card">
+              <img src="img/ON.png" alt="ON Semiconductor">
+            </div>
+
+            <div class="image-card">
+              <img src="img/Microchip.jpg" alt="Microchip">
+            </div>
+
+            <div class="image-card">
+              <img src="img/NVIDIA.png" alt="NVIDIA" style="width: 100%; height: 100%;">
+            </div>
+
+            <div class="image-card">
+              <img src="img/ANALOG.png" alt="Analog Devices">
+            </div>
+
+            <div class="image-card">
+              <img src="img/NXP.jpg" alt="NXP">
+            </div>
+
+            <div class="image-card">
+              <img src="img/SILICON LABS.jpg" alt="Silicon Labs">
+            </div>
+
+            <div class="image-card">
+              <img src="img/VISHAY.jpg" alt="Vishay">
+            </div>
+
+            <div class="image-card">
+              <img src="img/TOSHIBA.jpg" alt="Toshiba">
+            </div>
+
+            <div class="image-card">
+              <img src="img/SK_hynix.jpg" alt="SK Hynix">
+            </div>
+
+            <div class="image-card">
+              <img src="img/MICRON.png" alt="Micron">
+            </div>
+
+            <div class="image-card">
+              <img src="img/SAMSUNG.jpg" alt="Samsung">
+            </div>
+
+            <div class="image-card">
+              <img src="img/REALTEK.jpg" alt="Realtek">
+            </div>
+
+            <div class="image-card">
+              <img src="img/MOLEX.png" alt="Molex">
+            </div>
+
+            <div class="image-card">
+              <img src="img/MURATA.png" alt="Murata">
+            </div>
+
+            <div class="image-card">
+              <img src="img/ALTERA.jpg" alt="Altera">
+            </div>
+
+            <div class="image-card">
+              <img src="img/TEXAS.png" alt="Texas Instruments">
+            </div>
+
+            <div class="image-card">
+              <img src="img/XILINX.jpg" alt="Xilinx">
+            </div>
+
+            <div class="image-card">
+              <img src="img/CYPRESS.png" alt="Cypress">
+            </div>
+
+            <div class="image-card">
+              <img src="img/BOURNS.jpg" alt="Bourns">
+            </div>
+
+            <div class="image-card">
+              <img src="img/AVX.png" alt="AVX">
+            </div>
+
+            <div class="image-card">
+              <img src="img/INFINEON.jpg" alt="Infineon">
+            </div>
+
+            <div class="image-card">
+              <img src="img/BROADCOM.png" alt="Broadcom">
+            </div>
+
+            <div class="image-card">
+              <img src="img/INTEL.jpg" alt="Intel">
+            </div>
+
+            <div class="image-card">
+              <img src="img/DIODES.jpg" alt="Diodes">
+            </div>
+
+            <div class="image-card">
+              <img src="img/EPSON.png" alt="Epson">
+            </div>
+
+            <div class="image-card">
+              <img src="img/TDK.png" alt="TDK">
+            </div>
+
+            <div class="image-card">
+              <img src="img/ALLEGRO.jpg" alt="Allegro">
+            </div>
+
+            <div class="image-card">
+              <img src="img/MARVELL.jpg" alt="Marvell">
+            </div>
+
+            <div class="image-card">
+              <img src="img/ST.jpg" alt="ST Microelectronics">
+            </div>
+
+            <div class="image-card">
+              <img src="img/ROHM.jpg" alt="Rohm">
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer id="footer-placeholder" class="site-footer"></footer>
+
+  </div>
+
+  <script>
+    async function loadComponent(id, url) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.text();
+        const element = document.getElementById(id);
+        if (element) {
+          element.innerHTML = data;
+          if (id === 'header-placeholder') highlightNav();
+        }
+      } catch (err) {
+        console.error('加载失败:', url, err);
+      }
+    }
+
+    loadComponent('header-placeholder', 'header.html');
+    loadComponent('footer-placeholder', 'footer.html');
+
+    function highlightNav() {
+      const currentPath = window.location.pathname.split("/").pop() || "index.html";
+      const navLinks = document.querySelectorAll('.main-nav a');
+      navLinks.forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+          link.style.color = "#2f8aff";
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>

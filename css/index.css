@@ -59,7 +59,7 @@
   font-size: 1.25rem;
   color: var(--text-sub);
   max-width: 600px;
-  font-weight: 300;
+  font-weight: bold;
 }
 
 /* Carousel Controls */
@@ -165,7 +165,7 @@
 
 /* Feature Sections - Consistent Layout */
 .feature-section, .feature-grey {
-  padding: 140px 0;
+  padding: 80px 0;
   border-top: 1px solid var(--border-light);
 }
 

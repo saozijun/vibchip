@@ -58,11 +58,12 @@
 
 /* Service Section Layout */
 .service-section {
-  padding: 100px 0;
+  padding: 80px 0;
   background-color: var(--bg-base);
 }
 
 .service-layout {
+  max-width: 1100px;
   display: grid;
   grid-template-columns: 1fr 1.2fr;
   gap: 80px;

@@ -18,7 +18,7 @@
 
 .image-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 24px;
 
 }
@@ -26,11 +26,11 @@
 .image-card {
   background: white; /* Clean white for logos */
   border-radius: var(--radius-md);
-  height: 100px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 10px;
   transition: var(--transition);
   position: relative;
   overflow: hidden;

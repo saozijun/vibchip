@@ -47,7 +47,7 @@
 }
 
 .slide-title {
-  font-size: 3.5rem;
+  font-size: 36px;
   font-weight: 700;
   margin-bottom: 20px;
   line-height: 1.1;
@@ -136,12 +136,12 @@
 }
 
 .intro-content h2 {
-  font-size: 24px;
+  font-size: 17px;
   margin-bottom: 24px;
 }
 
 .intro-content .text-body {
-  font-size: 1.1rem;
+  font-size: 16px;
   line-height: 1.8;
   color: var(--text-sub);
   margin-bottom: 40px;
@@ -239,7 +239,7 @@
 
 /* Responsive */
 @media (max-width: 1024px) {
-  .slide-title { font-size: 2.5rem; }
+  .slide-title { font-size: 28px; }
   .intro-grid, .feature-row, .feature-row.reverse {
     grid-template-columns: 1fr;
     flex-direction: column;

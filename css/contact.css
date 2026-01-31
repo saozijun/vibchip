@@ -49,13 +49,17 @@
   font-size: 3.5rem;
   margin-bottom: 20px;
 }
-
+.map-content p {
+  font-size: 19px; 
+  color: #fff;
+}
 .contact-main {
   padding: 60px 0 140px;
   text-align: center;
 }
 .contact-main h2 {
-  font-size: 3.5rem;
+  color: var(--accent-cyan);
+  font-size: 24px;
   margin-bottom: 20px;
 }
 .contact-grid {
@@ -70,7 +74,7 @@
   backdrop-filter: blur(10px);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-lg);
-  padding: 50px 30px;
+  padding: 20px 10px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -87,8 +91,8 @@
 .email-icon {
   width: 72px;
   height: 72px;
-  background: rgba(14, 165, 233, 0.1);
-  color: var(--accent-cyan);
+  background: var(--accent-cyan);
+  color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -99,8 +103,8 @@
 }
 
 .email-card:hover .email-icon {
-  background: var(--accent-cyan);
-  color: white;
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--accent-cyan);
 }
 
 .email-card h4 {

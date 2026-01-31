@@ -2,7 +2,7 @@
 
 /* Hero Banner */
 .hero-banner {
-  max-width: 1040px;
+  max-width: 900px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(222px, 1fr));
@@ -15,7 +15,7 @@
 
 .grid-item {
   position: relative;
-  aspect-ratio: 11 / 12;
+  aspect-ratio: 8 / 9;
   overflow: hidden;
   border-radius: var(--radius-md);
   cursor: pointer;

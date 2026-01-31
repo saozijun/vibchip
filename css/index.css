@@ -177,7 +177,7 @@
 .feature-row {
   display: flex;
   align-items: center;
-  gap: 100px;
+  gap: 80px;
 }
 
 .feature-row.reverse {
@@ -185,7 +185,7 @@
 }
 
 .feature-image {
-  flex: 1;
+  flex: 1.1;
   height: 380px;
   border-radius: var(--radius-lg);
   overflow: hidden;

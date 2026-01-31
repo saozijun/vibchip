@@ -202,12 +202,13 @@
 }
 
 .feature-content .lev {
-  color: var(--accent-cyan);
+  color: #01b0f0;
   font-size: 19px;
   font-weight: 700;
   letter-spacing: 2px;
   margin-bottom: 16px;
   display: block;
+  text-shadow: 0px 1px 3px #15c5ff;
 }
 
 .feature-content h2 {

@@ -36,7 +36,7 @@
   position: relative;
   z-index: 2;
   margin-left: 10%;
-  max-width: 800px;
+  max-width: 1200px;
   opacity: 0;
   transform: translateY(30px);
   animation: slideContentFade 1s ease forwards 0.3s;
@@ -203,16 +203,15 @@
 
 .feature-content .lev {
   color: var(--accent-cyan);
-  font-size: 0.9rem;
+  font-size: 19px;
   font-weight: 700;
-  text-transform: uppercase;
   letter-spacing: 2px;
   margin-bottom: 16px;
   display: block;
 }
 
 .feature-content h2 {
-  font-size: 2.5rem;
+  font-size: 24px;
   margin-bottom: 24px;
 }
 

@@ -2,16 +2,20 @@
 
 /* Hero Banner */
 .hero-banner {
+  max-width: 1040px;
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(222px, 1fr));
   gap: 40px; 
   background: var(--bg-base);
   padding: 40px;
+  padding-top: 80px;
+  padding-bottom: 10px;
 }
 
 .grid-item {
   position: relative;
-  aspect-ratio: 16 / 12;
+  aspect-ratio: 11 / 12;
   overflow: hidden;
   border-radius: var(--radius-md);
   cursor: pointer;
@@ -74,7 +78,6 @@
   color: var(--accent-cyan);
   font-size: 0.875rem;
   font-weight: 600;
-  text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: 20px;
   background: rgba(36, 134, 255, 0.1);
@@ -84,7 +87,7 @@
 }
 
 .intro-title {
-  font-size: 3rem;
+  font-size: 2.5rem;
   margin-bottom: 24px;
   line-height: 1.1;
   background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
@@ -103,7 +106,7 @@
 .service-masonry {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(3, 120px);
+  grid-template-rows: repeat(3, 100px);
   gap: 24px;
 }
 

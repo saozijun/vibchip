@@ -14,8 +14,11 @@
   padding: 60px;
   border: 1px solid var(--border-light);
   margin-bottom: 40px;
+  transition: all .3s;
 }
-
+.grid-container-box:hover {
+  transform: translateY(-10px);
+}
 .image-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));

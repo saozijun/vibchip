@@ -130,7 +130,6 @@
 .s-card-main:hover {
   border-color: rgba(56, 189, 248, 0.3);
   box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
-  transform: translateY(-5px);
 }
 
 .s-card-main .s-card-header {
@@ -186,7 +185,6 @@
 .s-card:nth-child(4) { grid-row: 3 / 4; }
 
 .s-card:hover {
-  transform: translateX(-5px);
   border-color: rgba(56, 189, 248, 0.3);
   background: rgba(30, 41, 59, 0.8);
 }
@@ -194,13 +192,13 @@
 .s-icon-box {
   width: 56px;
   height: 56px;
-  background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(36, 134, 255, 0.05));
+  background: var(--accent-cyan);
   border: 1px solid rgba(56, 189, 248, 0.1);
   border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent-cyan);
+  color: white;
   font-size: 1.5rem;
   flex-shrink: 0;
   transition: var(--transition);
@@ -208,8 +206,8 @@
 
 .s-card:hover .s-icon-box,
 .s-card-main:hover .s-icon-box {
-  background: var(--accent-cyan);
-  color: white;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(36, 134, 255, 0.05));
+  color: var(--accent-cyan);
   transform: rotateY(180deg);
 }
 
